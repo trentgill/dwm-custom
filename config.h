@@ -7,15 +7,15 @@ static const int showbar            = 0;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "monospace:size=14" };
 static const char dmenufont[]       = "monospace:size=14";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char col_gray1[]       = "#111111";
+static const char col_gray2[]       = "#222222";
+static const char col_gray3[]       = "#444444";
+static const char col_gray4[]       = "#999999";
+static const char col_cyan[]        = "#999999";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeSel]  = { col_gray4, col_gray2, col_gray3 },
 };
 
 /* tagging */
@@ -29,7 +29,7 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "Sublime",  NULL,       NULL,       2,	        0,           -1 },
+	{ "Sublime",  NULL,       NULL,       2,            0,           -1 },
 };
 
 /* layout(s) */
@@ -59,19 +59,41 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-// 
+
+
+// custom commands for function keys
+// note these don't use MODKEY and are just mapped directly to the function keys
+static const char *newmonitor[] = { "xrandr", "--output", "HDMI2", "--auto", "--above", "eDP1", NULL };
+static const char *volup[] = { "amixer", "set", "Master", "5%+", "-q", NULL };
+static const char *volmute[] = { "amixer", "-D", "pulse", "set", "Master", "1+", "toggle", "-q", NULL };
+static const char *voldn[] = { "amixer", "set", "Master", "5%-", "-q", NULL };
+static const char *network[] = { "st", "nmtui", NULL };
+
+static const char *notouch[] = { "xinput", "disable", "\"SynPS/2 Synaptics Touchpad\"", NULL };
+static const char *touchon[] = { "xinput", "enable", "\"SynPS/2 Synaptics Touchpad\"", NULL };
+
+static const char *lowbright[] = { "xrandr", "--output", "eDP1", "--brightness", "0.45", NULL };
+static const char *midlowbright[] = { "xrandr", "--output", "eDP1", "--brightness", "0.6", NULL };
+static const char *normalbright[] = { "xrandr", "--output", "eDP1", "--brightness", "0.75", NULL };
+static const char *bright[] = { "xrandr", "--output", "eDP1", "--brightness", "1.0", NULL };
+
 // MOD+F7 = run xrandr --auto (to detect new monitor)
-// MOD+PrintScreen = toggle trackpad enable/disable
-
-// MOD+F1-4 = audio settings (alsamixer shortcuts?)
-// MOD+F5-6 = xrandr --output eDP1 --brightness <var>
-
-// menubar should have battery level readout instead of dwm version
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+        { 0,                            XK_F7,     spawn,          {.v = newmonitor } },
+        { 0,                            XK_F1,     spawn,          {.v = volmute } },
+        { 0,                            XK_F2,     spawn,          {.v = voldn } },
+        { 0,                            XK_F3,     spawn,          {.v = volup } },
+        { 0,                            XK_F8,     spawn,          {.v = network } },
+        { 0,                            XK_F12,    spawn,          {.v = notouch } },
+        { MODKEY,                       XK_F12,    spawn,          {.v = touchon } },
+        { MODKEY,                       XK_F5,     spawn,          {.v = lowbright } },
+        { 0,                            XK_F5,     spawn,          {.v = midlowbright } },
+        { 0,                            XK_F6,     spawn,          {.v = normalbright } },
+        { MODKEY,                       XK_F6,     spawn,          {.v = bright } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
