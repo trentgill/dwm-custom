@@ -11,7 +11,7 @@ static const char col_gray1[]       = "#111111";
 static const char col_gray2[]       = "#222222";
 static const char col_gray3[]       = "#444444";
 static const char col_gray4[]       = "#999999";
-static const char col_cyan[]        = "#999999";
+static const char col_cyan[]        = "#AAAACC";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -19,7 +19,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "brd" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -30,6 +30,8 @@ static const Rule rules[] = {
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 	{ "Sublime",  NULL,       NULL,       2,            0,           -1 },
+	{ "eagle",    NULL,       NULL,       4,            0,           -1 },
+	{ "thunderbird", NULL,    NULL,       7,            0,           -1 },
 };
 
 /* layout(s) */
@@ -45,7 +47,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask // Left Win key. Mod1Mask is left alt key
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
