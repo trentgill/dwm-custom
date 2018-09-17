@@ -11,7 +11,7 @@ static const char col_gray1[]       = "#111111";
 static const char col_gray2[]       = "#222222";
 static const char col_gray3[]       = "#444444";
 static const char col_gray4[]       = "#999999";
-static const char col_cyan[]        = "#AAAACC";
+static const char col_cyan[]        = "#666699";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -19,7 +19,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "brd" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -29,9 +29,10 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "Sublime",  NULL,       NULL,       2,            0,           -1 },
-	{ "eagle",    NULL,       NULL,       4,            0,           -1 },
-	{ "thunderbird", NULL,    NULL,       7,            0,           -1 },
+	{ "Sublime",  NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "Eagle",    NULL,       NULL,       1 << 4,       0,           -1 },
+	{ "Thunderbird", NULL,    NULL,       1 << 6,       0,           -1 },
+	{ "Chromium-browser", NULL,NULL,      1 << 7,       0,           -1 },
 };
 
 /* layout(s) */
@@ -65,7 +66,7 @@ static const char *termcmd[]  = { "st", NULL };
 
 // custom commands for function keys
 // note these don't use MODKEY and are just mapped directly to the function keys
-static const char *newmonitor[] = { "xrandr", "--output", "HDMI2", "--auto", "--above", "eDP1", NULL };
+static const char *newmonitor[] = { "xrandr", "--output", "HDMI2", "--auto", "--left-of", "eDP1", NULL };
 static const char *volup[] = { "amixer", "set", "Master", "5%+", "-q", NULL };
 static const char *volmute[] = { "amixer", "-D", "pulse", "set", "Master", "1+", "toggle", "-q", NULL };
 static const char *voldn[] = { "amixer", "set", "Master", "5%-", "-q", NULL };
@@ -85,17 +86,17 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-        { 0,                            XK_F7,     spawn,          {.v = newmonitor } },
-        { 0,                            XK_F1,     spawn,          {.v = volmute } },
-        { 0,                            XK_F2,     spawn,          {.v = voldn } },
-        { 0,                            XK_F3,     spawn,          {.v = volup } },
-        { 0,                            XK_F8,     spawn,          {.v = network } },
-        { 0,                            XK_F12,    spawn,          {.v = notouch } },
-        { MODKEY,                       XK_F12,    spawn,          {.v = touchon } },
-        { MODKEY,                       XK_F5,     spawn,          {.v = lowbright } },
-        { 0,                            XK_F5,     spawn,          {.v = midlowbright } },
-        { 0,                            XK_F6,     spawn,          {.v = normalbright } },
-        { MODKEY,                       XK_F6,     spawn,          {.v = bright } },
+        { MODKEY,                 XK_F7,     spawn,          {.v = newmonitor } },
+        { MODKEY,                 XK_F1,     spawn,          {.v = volmute } },
+        { MODKEY,                 XK_F2,     spawn,          {.v = voldn } },
+        { MODKEY,                 XK_F3,     spawn,          {.v = volup } },
+        { MODKEY,                 XK_F8,     spawn,          {.v = network } },
+        { MODKEY,                 XK_F12,    spawn,          {.v = notouch } },
+        { MODKEY|ShiftMask,       XK_F12,    spawn,          {.v = touchon } },
+        { MODKEY|ShiftMask,       XK_F5,     spawn,          {.v = lowbright } },
+        { MODKEY,                 XK_F5,     spawn,          {.v = midlowbright } },
+        { MODKEY,                 XK_F6,     spawn,          {.v = normalbright } },
+        { MODKEY|ShiftMask,       XK_F6,     spawn,          {.v = bright } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
